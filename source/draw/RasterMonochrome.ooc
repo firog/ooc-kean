@@ -265,6 +265,11 @@ RasterMonochrome: class extends RasterPacked {
 			Debug error(x >= this size x || y >= this size y || x < 0 || y < 0, "Accessing RasterMonochrome index out of range in getValue")
 		(this buffer pointer[y * this stride + x])
 	}
+	setValue: func (x, y: Int, value: Byte) {
+		version(safe)
+			Debug error(x >= this size x || y >= this size y || x < 0 || y < 0, "Accessing RasterMonochrome index out of range in getValue")
+		this buffer pointer[y * this stride + x] = value
+	}
 
 	getRow: func (row: Int) -> FloatVectorList {
 		result := FloatVectorList new(this size x)
