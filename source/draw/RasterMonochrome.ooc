@@ -358,6 +358,19 @@ RasterMonochrome: class extends RasterPacked {
 		}
 		difference / ((this height - 2 * padding) * (this width - 2 * padding))
 	}
+	toString: func -> String {
+		result := CharBuffer new(this size area * 3 + this size y)
+		p := this buffer pointer as Byte*
+		for (y in 0 .. this size y) {
+			for (x in 0 .. this size x) {
+				formated := "%02x " format(p[x + y * this stride] as Int)
+				result append(formated)
+				formated free()
+			}
+			result append('\n')
+		}
+		String new(result)
+	}
 	// Serialize to a lossy ascii image using an alphabet
 	// Precondition: alphabet may not have extended ascii, non printable, '\', '"', '>' or linebreak
 	// Example alphabet: " .,-_':;!+~=^?*abcdefghijklmnopqrstuvwxyz()[]{}|&%@#0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
