@@ -265,6 +265,11 @@ RasterMonochrome: class extends RasterPacked {
 			Debug error(x >= this size x || y >= this size y || x < 0 || y < 0, "Accessing RasterMonochrome index out of range in getValue")
 		(this buffer pointer[y * this stride + x])
 	}
+	setValue: func (x, y: Int, value: Byte) {
+		version(safe)
+			Debug error(x >= this size x || y >= this size y || x < 0 || y < 0, "Accessing RasterMonochrome index out of range in getValue")
+		this buffer pointer[y * this stride + x] = value
+	}
 
 	getRow: func (row: Int) -> FloatVectorList {
 		result := FloatVectorList new(this size x)
@@ -357,6 +362,18 @@ RasterMonochrome: class extends RasterPacked {
 			otherBuffer += other stride - other width + 2 * padding
 		}
 		difference / ((this height - 2 * padding) * (this width - 2 * padding))
+	}
+	toString: func -> String {
+		result := CharBuffer new(this size area * 3 + this size y)
+		for (y in 0 .. this size y) {
+			for (x in 0 .. this size x) {
+				formated := "%02x " format(this getValue(x, y) as Int)
+				result append(formated)
+				formated free()
+			}
+			result append('\n')
+		}
+		String new(result)
 	}
 	// Serialize to a lossy ascii image using an alphabet
 	// Precondition: alphabet may not have extended ascii, non printable, '\', '"', '>' or linebreak

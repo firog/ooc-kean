@@ -20,6 +20,11 @@ asin: extern (asinf) func (Float) -> Float
 atan: extern (atanf) func (Float) -> Float
 sqrt: extern (sqrtf) func (Float) -> Float
 
+extend Byte {
+	maximum: func (other: This) -> This { this > other ? this : other }
+	minimum: func (other: This) -> This { this < other ? this : other }
+}
+
 extend Long {
 	modulo: func (divisor: This) -> This {
 		result := this - (this / divisor) * divisor
